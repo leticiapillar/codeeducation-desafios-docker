@@ -23,10 +23,14 @@ services:
     build:
       context: ./app-people
       dockerfile: Dockerfile
+      target: production
     image: leticiapillar/desafio-nginx-node-app:latest
     container_name: app
-    entrypoint: dockerize -wait tcp://db:3306 -timeout 60s docker-entrypoint.sh npm start
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 60s docker-entrypoint.sh
+    command: npm run start
     tty: true
+    environment:
+      NODE_ENV: production
     volumes:
       - ./app-people:/usr/src/app
     ports:
@@ -40,7 +44,7 @@ services:
     build:
       context: ./nginx
       dockerfile: Dockerfile
-    image: leticiapillar/desafio-nginx:latest
+    # image: leticiapillar/desafio-nginx:latest
     container_name: nginx
     restart: always
     networks:
